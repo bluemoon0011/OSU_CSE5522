@@ -170,7 +170,7 @@ class ReinforcementAgent(ValueEstimationAgent):
         numTraining - number of training episodes, i.e. no learning after these many episodes
         """
         if actionFn == None:
-            actionFn = lambda state: state.getLegalActions()
+            actionFn = lambda state: state.getLegalActions() #input, state; output, state.getLegalActions()
         self.actionFn = actionFn
         self.episodesSoFar = 0
         self.accumTrainRewards = 0.0
