@@ -21,41 +21,41 @@
 
 def question2():
     answerDiscount = 0.9
-    answerNoise = 0.2
+    answerNoise = 0 # set noise to 0, the agent will never fall into the chasm
     return answerDiscount, answerNoise
 
 def question3a():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+    answerDiscount = 0.3
+    answerNoise = 0 # set noise as 0, that the agent has probability to go into the cliff
+    answerLivingReward = -0.7 # set answerLivingReward as negative value and its absolute value bigger then answerDiscount, which will make the agent prefer to go more shorter path
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3b():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+    answerDiscount = 0.3
+    answerNoise = 0.2 # set noise as positive value, which will give a huge penalty if the agent go into the cliff
+    answerLivingReward = -0.7 # set answerLivingReward as negative value and its absolute value bigger then answerDiscount, which will make the agent prefer to go more shorter path
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3c():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+    answerDiscount = 0.6
+    answerNoise = 0 # set noise as 0, that the agent has probability to go into the cliff
+    answerLivingReward = 0.2 # set answerLivingReward as positive value so the agent can get more reward if it choose to go on the longer path
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3d():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+    answerDiscount = 0.6
+    answerNoise = 0.2 # set noise as positive value, which will give a huge penalty if the agent go into the cliff
+    answerLivingReward = 0.2 # set answerLivingReward as positive value so the agent can get more reward if it choose to go on the longer path
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3e():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+    answerDiscount = 0.6
+    answerNoise = 0.2 # set noise as positive value, which will give a huge penalty if the agent go into the cliff
+    answerLivingReward = 20 # set answerLivingReward as very big positive value, so the agent will walk around to try its best to get living reward first
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
