@@ -388,7 +388,7 @@ def parseOptions():
     optParser.add_option('-n', '--noise',action='store',
                          type='float',dest='noise',default=0.2,
                          metavar="P", help='How often action results in ' +
-                         'unintended direction (default %default)' )
+                         'unintended direction (def3ault %default)' )
     optParser.add_option('-e', '--epsilon',action='store',
                          type='float',dest='epsilon',default=0.3,
                          metavar="E", help='Chance of taking a random action in q-learning (default %default)')

@@ -62,8 +62,9 @@ def question3e():
 def question6():
     answerEpsilon = None
     answerLearningRate = None
-    return answerEpsilon, answerLearningRate
-    # If not possible, return 'NOT POSSIBLE'
+    #return answerEpsilon, answerLearningRate
+    return 'NOT POSSIBLE' # after trying many epsilon and learning rate by changing the -e and -l, like : python gridworld.py -a q -k 50 -n 0 -g BridgeGrid -e 0.9  -l 0.3, I think it is impossible
+    # Because the you have make trade off between explore more stated and run with best policy, you can not control the random action even the epsilon is near 0.x`
 
 if __name__ == '__main__':
     print 'Answers to analysis questions:'
