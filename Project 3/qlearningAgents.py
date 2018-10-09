@@ -39,6 +39,10 @@ class QLearningAgent(ReinforcementAgent):
           which returns legal actions for a state
     """
     def __init__(self, **args):
+        '''
+        desc: the q-learning agent will update Q-value to get the policy and actions
+        :param args: the input parameter, which is not determined
+        '''
         "You can initialize Q-values here..."
         ReinforcementAgent.__init__(self, **args)
         "*** YOUR CODE HERE ***"
@@ -133,10 +137,7 @@ class QLearningAgent(ReinforcementAgent):
         desc:
           The parent class calls this to observe a
           state = action => nextState and reward transition.
-          You should do your Q-Value update here
-
-          NOTE: You should never call this function,
-          it will be called on your behalf
+          Here, the function is used to update the Q-value
         :param state: current state
         :param action: the action that the agent will take
         :param nextState: the next state after the agent take current action
@@ -175,7 +176,7 @@ class PacmanQAgent(QLearningAgent):
         These default parameters can be changed from the pacman.py command line.
         For example, to change the exploration rate, try:
             python pacman.py -p PacmanQLearningAgent -a epsilon=0.1
-
+        The meaning of the parameters are as follows:
         alpha    - learning rate
         epsilon  - exploration rate
         gamma    - discount factor
@@ -189,11 +190,13 @@ class PacmanQAgent(QLearningAgent):
         QLearningAgent.__init__(self, **args)
 
     def getAction(self, state):
-        """
-        Simply calls the getAction method of QLearningAgent and then
-        informs parent of action for Pacman.  Do not change or remove this
-        method.
-        """
+        '''
+        desc:
+          Simply calls the getAction method of QLearningAgent and then
+          informs parent of action for Pacman.
+        :param state: current state
+        :return: action
+        '''
         action = QLearningAgent.getAction(self,state)
         self.doAction(state,action)
         return action
@@ -208,6 +211,11 @@ class ApproximateQAgent(PacmanQAgent):
        should work as is.
     """
     def __init__(self, extractor='IdentityExtractor', **args):
+        '''
+        desc: the approximate q-learning agent will use this function to update the weights and get the final decisions
+        :param extractor: the method of feature extractor
+        :param args: the input parameters, which are not determined here
+        '''
         self.featExtractor = util.lookup(extractor, globals())()
         PacmanQAgent.__init__(self, **args)
         self.weights = util.Counter()
@@ -255,7 +263,11 @@ class ApproximateQAgent(PacmanQAgent):
             Weights[i]=Weights[i]+self.alpha* difference * Features[i]
 
     def final(self, state):
-        "Called at the end of each game."
+        '''
+        desc: Called at the end of each game to update and print the weights
+        :param state: current state
+        :return: no return, just updata the weights
+        '''
         # call the super-class final method
         PacmanQAgent.final(self, state)
 

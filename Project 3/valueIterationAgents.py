@@ -28,17 +28,9 @@ class ValueIterationAgent(ValueEstimationAgent):
     def __init__(self, mdp, discount = 0.9, iterations = 100):
         '''
         desc:
-          Your value iteration agent should take an mdp on
+          The value iteration agent should take an mdp on
           construction, run the indicated number of iterations
           and then act according to the resulting policy.
-
-          Some useful mdp methods you will use:
-              mdp.getStates()
-              mdp.getPossibleActions(state)
-              mdp.getTransitionStatesAndProbs(state, action)
-              mdp.getReward(state, action, nextState)
-              mdp.isTerminal(state)
-
         :param mdp: mdp class
         :param discount: discount rate
         :param iterations: number of iterations
@@ -61,7 +53,7 @@ class ValueIterationAgent(ValueEstimationAgent):
                     for action in self.mdp.getPossibleActions(currentState): # check all the possible actions that current state can take.
                         nextQValue=self.computeQValueFromValues(currentState,action) # get the max{maxValue, nextQValue}
                         maxQValue=max(nextQValue,maxQValue)# update max Q-value
-                    nextValues[currentState]=maxQValue
+                    nextValues[currentState]=maxQValue # the next value V(s')=max{Q(s',a)}
             self.values=nextValues
 
     def getValue(self, state):
@@ -99,8 +91,7 @@ class ValueIterationAgent(ValueEstimationAgent):
           The policy is the best action in the given state
           according to the values currently stored in self.values.
 
-          You may break ties any way you see fit.  Note that if
-          there are no legal actions, which is the case at the
+          If there are no legal actions, which is the case at the
           terminal state, you should return None.
         :param state: current state
         :return: the policy (optimal action) for current state
