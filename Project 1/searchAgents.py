@@ -288,6 +288,7 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
+        self.startingState=startingGameState
 
     def getStartState(self):
         """
@@ -295,14 +296,17 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return (self.startingPosition[0], self.startingPosition[1], (True, True, True, True))
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        for i in state[2]:
+            if i == True:
+                return False
+        return True
 
     def getSuccessors(self, state):
         """
@@ -325,7 +329,17 @@ class CornersProblem(search.SearchProblem):
             #   hitsWall = self.walls[nextx][nexty]
 
             "*** YOUR CODE HERE ***"
-
+            x, y, z = state
+            dx, dy = Actions.directionToVector(action)
+            nextX, nextY = int(x + dx), int(y + dy)
+            hitsWall = self.walls[nextX][nextY]
+            if hitsWall:
+                continue
+            nextTup = list(state[2])
+            for i in range(len(self.corners)):
+                if (nextX, nextY) == self.corners[i]:
+                    nextTup[i] = False
+            successors.append(((nextX, nextY, tuple(nextTup)), action, 1))
         self._expanded += 1 # DO NOT CHANGE
         return successors
 
@@ -360,7 +374,13 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+    x, y, z = state
+    totDist = 0
+    for i in range(len(corners)):
+        curr = mazeDistance((x, y), corners[i], problem.startState)
+        if state[2][i] and curr > totDist:
+            totDist = curr
+    return totDist
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
