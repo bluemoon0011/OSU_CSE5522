@@ -101,7 +101,7 @@ class ValueIterationAgent(ValueEstimationAgent):
         policy = None # if state is the terminal state, we won't change policy and this function will return None for policy
         if not self.mdp.isTerminal(state): # if the state is the terminal state, return the policy as None
             for action in self.mdp.getPossibleActions(state): # check all the actions
-                QValues[action]=self.getQValue(state,action)# compute the Q-Value for all actions
+                QValues[action]=self.getQValue(state, action)# compute the Q-Value for all actions
             policy=QValues.argMax() # the policy should be the action with the max Q-value
         return  policy
 
