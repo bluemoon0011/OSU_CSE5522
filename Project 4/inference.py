@@ -153,12 +153,12 @@ class ExactInference(InferenceModule):
         # Replace this code with a correct observation update
         # Be sure to handle the "jail" edge case where the ghost is eaten
         # and noisyDistance is None
-        allPossible = util.Counter()
-        if noisyDistance == None: # if the ghost was caught, put the ghost into the jail
+        allPossible = util.Counter() #create new Counter type data structure
+        if noisyDistance == None: # if there is no observation, this means the ghosts are in the jail
             allPossible[self.getJailPosition()] = 1
         else:
-            for position in self.legalPositions: # use sonar to get the probability of P( noisyDistance | TrueDistances ) * beliefs
-                distance = util.manhattanDistance(position, pacmanPosition)
+            for position in self.legalPositions: # use sonar to get the position of the ghost
+                distance = util.manhattanDistance(position, pacmanPosition) # calculate the the distance of ghost and pacman
                 if emissionModel[distance] > 0:
                     allPossible[position] = emissionModel[distance] * self.beliefs[position]
 
@@ -221,12 +221,12 @@ class ExactInference(InferenceModule):
         positions after a time update from a particular position.
         """
         "*** YOUR CODE HERE ***"
-        allPossible = util.Counter()
+        allPossible = util.Counter() # create new Counter type data structure
 
         for oldPosition in self.legalPositions:
-            newPossibleDistance = self.getPositionDistribution(self.setGhostPosition(gameState, oldPosition))
+            newPossibleDistance = self.getPositionDistribution(self.setGhostPosition(gameState, oldPosition)) # get the next possible distance from current position
             for newPosition, probability in newPossibleDistance.items():
-                allPossible[newPosition] += probability * self.beliefs[oldPosition]
+                allPossible[newPosition] += probability * self.beliefs[oldPosition] # generate new beliefs B(X_(t))
 
         allPossible.normalize()
         self.beliefs = allPossible
