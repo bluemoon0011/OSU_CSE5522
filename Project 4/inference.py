@@ -226,10 +226,10 @@ class ExactInference(InferenceModule):
         for oldPosition in self.legalPositions:
             newPossibleDistance = self.getPositionDistribution(self.setGhostPosition(gameState, oldPosition)) # get the next possible distance from current position
             for newPosition, probability in newPossibleDistance.items():
-                allPossible[newPosition] += probability * self.beliefs[oldPosition] # generate new beliefs B(X_(t))
+                allPossible[newPosition] += probability * self.beliefs[oldPosition] # generate possible positions of the ghost based on new beliefs B(X_(t))
 
-        allPossible.normalize()
-        self.beliefs = allPossible
+        allPossible.normalize() # normalize to ensure its integrity
+        self.beliefs = allPossible # update beliefs
 
     def getBeliefDistribution(self):
         return self.beliefs
