@@ -244,7 +244,7 @@ class ParticleFilter(InferenceModule):
     """
 
     def __init__(self, ghostAgent, numParticles=300):
-        InferenceModule.__init__(self, ghostAgent);
+        InferenceModule.__init__(self, ghostAgent)
         self.setNumParticles(numParticles)
 
     def setNumParticles(self, numParticles):
@@ -425,6 +425,12 @@ class JointParticleFilter:
         weight with each position) is incorrect and may produce errors.
         """
         "*** YOUR CODE HERE ***"
+        allPossiblePositions=list(itertools.product(self.legalPositions, repeat=self.numGhosts)) #get all the possible postions of ghosts
+        random.shuffle(allPossiblePositions) # random choose the postions of ghost
+        self.particles=[]
+        for num in range(self.numParticles): # check all the particles
+            self.particles.append(allPossiblePositions[num % len(allPossiblePositions)]) # update the particles
+
 
     def addGhostAgent(self, agent):
         """
@@ -434,7 +440,7 @@ class JointParticleFilter:
         self.ghostAgents.append(agent)
 
     def getJailPosition(self, i):
-        return (2 * i + 1, 1);
+        return (2 * i + 1, 1)
 
     def observeState(self, gameState):
         """
@@ -472,6 +478,30 @@ class JointParticleFilter:
         emissionModels = [busters.getObservationDistribution(dist) for dist in noisyDistances]
 
         "*** YOUR CODE HERE ***"
+        weightedParticles=util.Counter() # create new Counter data structure
+        particles = [] # create an empty list
+        for particle in self.particles: # check all the particle sample
+            ghostPositions=list(particle) # get the position of the ghost
+            weight = 1.0 # initialize weight
+            for num in range(self.numGhosts): # check all the ghosts
+                distance = util.manhattanDistance(ghostPositions[num], pacmanPosition) # calculate the distance between ghost and pacman
+                if noisyDistances[num] != None: # no inference, then update weight
+                    weight = weight * emissionModels[num][distance] # update the weight with P( noisyDistance | TrueDistances )
+                else:
+                    particle = self.getParticleWithGhostInJail(particle, num) # update particle
+            weightedParticles[particle] = weightedParticles[particle]+weight # update values of the particles with the weights
+        weightedParticles.normalize() # normalization
+        if weightedParticles.totalCount() == 0: # the sum of all values of weightedParticles, if there is no particles after updation
+            self.initializeParticles() # initialization
+            particles = self.particles
+            for ghost in range(self.numGhosts): # check all the ghost
+                if noisyDistances[ghost] == None: # if there is no ghosts inference
+                    for num in range(self.numParticles): # check all the particles
+                        particles[num] = self.getParticleWithGhostInJail(self.particles[num], ghost) # update particles with ghosts
+        else: # there is new ghosts after updation
+            for num in range(self.numParticles): # check all the particles
+                particles.append(util.sampleFromCounter(weightedParticles)) # add all the new updated particles
+        self.particles = particles
 
     def getParticleWithGhostInJail(self, particle, ghostIndex):
         """
@@ -532,14 +562,19 @@ class JointParticleFilter:
             # now loop through and update each entry in newParticle...
 
             "*** YOUR CODE HERE ***"
-
+            for ghost in range(self.numGhosts): # check all the ghost
+                newParticle[ghost] = util.sample(getPositionDistributionForGhost(setGhostPositions(gameState, list(oldParticle)), ghost,self.ghostAgents[ghost])) # update the particles
             "*** END YOUR CODE HERE ***"
             newParticles.append(tuple(newParticle))
         self.particles = newParticles
 
     def getBeliefDistribution(self):
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        beliefs = util.Counter() # create the new Counter data structure
+        for particle in self.particles: # check all the particles
+            beliefs[particle] = beliefs[particle]+1 # update the belief ofnparticles
+        beliefs.normalize() # normalization of the new beliefs
+        return beliefs
 
 # One JointInference module is shared globally across instances of MarginalInference
 jointInference = JointParticleFilter()
