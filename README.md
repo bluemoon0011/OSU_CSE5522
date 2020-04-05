@@ -4,7 +4,7 @@ OSU CSE5522/Advanced Artificial Intelligence
 |---|---
 |Instructor|Wei Xu|
 |Project Author|Xin Jin|
-|E-mail|xin.jin0010@gmail.com|
+|E-mail|xin.jin0011@gmail.com|
 
 ****
 # Description
